@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SlayLine — Kansas Family Law AI</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<aside class="side">
+  <div class="brand"><span class="mark">S</span><div><b>SLAYLINE</b><small>KANSAS LEGAL AI</small></div></div>
+  <button class="primary" onclick="newCase()">＋ New case</button>
+  <div class="label">WORKSPACE</div>
+  <button class="nav active" onclick="view('chat')">⚖ AI Legal Counsel</button>
+  <button class="nav" onclick="view('case')">▣ My Case</button>
+  <button class="nav" onclick="view('law')">⌕ Kansas Law</button>
+  <button class="nav" onclick="view('pfa')">🛡 PFA Analyzer</button>
+  <button class="nav" onclick="view('docs')">▤ Evidence & Documents</button>
+  <button class="nav" onclick="view('timeline')">◷ Timeline</button>
+  <button class="nav" onclick="view('attorney')">⚖ Attorney Handoff</button>
+  <div class="label">TOOLS</div>
+  <button class="nav" onclick="view('forms')">▤ Kansas Forms</button>
+  <button class="nav" onclick="view('deadlines')">⏱ Deadlines</button>
+  <div class="sidebottom"><span class="live"></span> Kansas source monitor<br><small>Production mode requires backend connection.</small></div>
+</aside>
+<main>
+<header><div><span class="eyebrow">KANSAS • FAMILY LAW</span><h1 id="title">AI Legal Counsel</h1></div><div class="top-actions"><span class="secure">🔒 Private workspace</span><button onclick="openSettings()">Settings</button></div></header>
+
+<section id="chat" class="screen">
+  <div class="hero">
+    <div><span class="tag">KANSAS-FIRST</span><h2>Law first. Sources first. Your facts second.</h2>
+    <p>Ask a question. SlayLine retrieves the relevant Kansas authority, separates law from your facts, checks citations, and shows what needs attorney review.</p></div>
+    <div class="score"><b>LAW</b><strong>AI</strong><span>Research engine</span></div>
+  </div>
+  <div class="chatbox" id="chatbox">
+    <div class="bubble ai"><div class="avatar">S</div><div><b>SlayLine</b><p>What Kansas family-law issue are you working on?</p>
+    <div class="quick"><button onclick="ask('Explain the Kansas PFA hearing standard and what each side can present.')">PFA hearing</button><button onclick="ask('Analyze the Kansas PFA order rules and explain what a final order can contain.')">PFA order</button><button onclick="ask('What Kansas family-law statutes govern custody and parenting plans?')">Custody</button><button onclick="ask('What should I put into a family-court evidence timeline?')">Evidence timeline</button></div></div></div>
+  </div>
+  <div class="composer"><textarea id="q" placeholder="Ask a Kansas legal question or describe what happened…"></textarea><div><span>⌁ Retrieval + citation verification</span><button class="primary" onclick="send()">Ask SlayLine</button></div></div>
+</section>
+
+<section id="case" class="screen"><div class="grid2"><div class="card"><h2>My Case</h2><p>Create a matter and keep facts, documents, deadlines, and legal research together.</p><label>Case name<input id="caseName" placeholder="e.g. Hoop Family Matter"></label><label>County<input id="county" placeholder="Kansas county"></label><label>Matter type<select><option>PFA</option><option>Divorce</option><option>Custody / Parenting Time</option><option>Child Support</option><option>Other Family Law</option></select></label><button class="primary" onclick="saveCase()">Save case</button></div><div class="card"><h2>Case health</h2><div class="metric"><b id="docCount">0</b><span>documents</span></div><div class="metric"><b id="eventCount">0</b><span>timeline events</span></div><div class="metric"><b>0</b><span>unverified citations</span></div></div></div></section>
+
+<section id="law" class="screen"><div class="card"><h2>Kansas Law Library</h2><p>Primary-source navigation for the production retrieval engine.</p><div class="lawcards">
+<a target="_blank" href="https://www.kslegislature.gov/b2025_26/laws/023_000_0000_chapter/"><b>Chapter 23 — Kansas Family Law Code</b><span>Marriage, divorce, property, support, custody, parenting time, UCCJEA.</span></a>
+<a target="_blank" href="https://www.kslegislature.gov/b2025_26/laws/search/"><b>Kansas Statute Search</b><span>Search current statutes by number or keyword.</span></a>
+<a target="_blank" href="https://www.kslegislature.gov/b2025_26/laws/060_000_0000_chapter/060_031_0000_article/"><b>Chapter 60, Article 31 — PFA Act</b><span>60-3101 through 60-3112.</span></a>
+<a target="_blank" href="https://www.kjc.ks.gov/legal-forms/protection-from-abuse"><b>Kansas Judicial Council — PFA Forms</b><span>Petition, answer, temporary/final orders, modification, extension, dismissal and more.</span></a>
+</div></div></section>
+
+<section id="pfa" class="screen"><div class="card"><h2>PFA Order Analyzer</h2><p>Upload a signed order in the production version. The analyzer should extract the exact restrictions and compare them with the current Kansas authority.</p><div class="drop"><input type="file" id="pfaFile" accept=".pdf,.png,.jpg,.jpeg" onchange="fileAdded(this)"><label for="pfaFile">Drop PFA order here or tap to choose</label></div><div class="extract"><div><b>Order type</b><span>—</span></div><div><b>Effective date</b><span>—</span></div><div><b>Expiration</b><span>—</span></div><div><b>Contact restrictions</b><span>—</span></div><div><b>Child provisions</b><span>—</span></div><div><b>Residence/property</b><span>—</span></div></div></div></section>
+
+<section id="docs" class="screen"><div class="card"><h2>Evidence & Documents</h2><p>Production engine: OCR → classify → extract dates → hash source → link evidence to facts → cite original page.</p><div class="drop"><input type="file" multiple id="docsFile" onchange="docsAdded(this)"><label for="docsFile">Choose PDFs, screenshots, texts or court documents</label></div><div id="fileList"></div></div></section>
+
+<section id="timeline" class="screen"><div class="card"><h2>Case Timeline</h2><p>Build a neutral chronology. Each event can link to a document and legal issue.</p><div class="row"><input id="date" placeholder="Date"><input id="event" placeholder="What happened?"><button class="primary" onclick="addTimeline()">Add</button></div><div id="timelineList"></div></div></section>
+
+<section id="attorney" class="screen"><div class="card"><h2>Attorney Handoff</h2><p>Generate a lawyer-ready packet without pretending the AI is your lawyer.</p><div class="handoff"><div><b>Case summary</b><span>Facts + procedural posture</span></div><div><b>Authority list</b><span>Verified Kansas statutes/cases</span></div><div><b>Evidence index</b><span>Original documents + page references</span></div><div><b>Questions for counsel</b><span>Unresolved legal issues</span></div></div><button class="primary" onclick="alert('Production version will export a PDF/DOCX packet and offer verified Kansas attorney referral.')">Build attorney packet</button></div></section>
+
+<section id="forms" class="screen"><div class="card"><h2>Kansas Forms</h2><p>Official forms should be linked from the Kansas Judicial Council and never republished inside SlayLine without permission.</p><a class="biglink" target="_blank" href="https://www.kjc.ks.gov/legal-forms/protection-from-abuse">Open official PFA forms →</a></div></section>
+
+<section id="deadlines" class="screen"><div class="card"><h2>Deadlines & Alerts</h2><p>Production feature: extract hearing dates and deadlines from uploaded court documents and require the user to confirm them before an alert is created.</p><div class="warning">A legal AI should never invent a deadline. The source document and court record must control.</div></div></section>
+
+<div id="settings" class="modal" hidden><div class="modalbox"><button class="x" onclick="closeSettings()">×</button><h2>SlayLine settings</h2><p>Production controls: jurisdiction lock, citation strictness, privacy/export, source versioning, attorney referrals and AI model routing.</p><button class="primary" onclick="closeSettings()">Done</button></div></div>
+</main><script src="app.js"></script>
+</body></html>
